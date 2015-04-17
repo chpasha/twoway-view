@@ -567,7 +567,7 @@ public abstract class TwoWayLayoutManager extends LayoutManager {
         }
     }
 
-    private void resetLayoutEdges() {
+    protected void resetLayoutEdges() {
         mLayoutStart = getStartWithPadding();
         mLayoutEnd = mLayoutStart;
     }

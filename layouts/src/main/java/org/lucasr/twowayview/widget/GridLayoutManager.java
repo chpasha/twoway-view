@@ -115,6 +115,7 @@ public class GridLayoutManager extends BaseLayoutManager {
 
         mNumColumns = numColumns;
         if (isVertical()) {
+			resetLayoutEdges();
             requestLayout();
         }
     }
@@ -130,6 +131,7 @@ public class GridLayoutManager extends BaseLayoutManager {
 
         mNumRows = numRows;
         if (!isVertical()) {
+			resetLayoutEdges();
             requestLayout();
         }
     }
