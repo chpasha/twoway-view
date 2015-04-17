@@ -23,14 +23,12 @@ public class SpacingItemDecoration extends ItemDecoration {
         final TypedArray a =
                 context.obtainStyledAttributes(attrs, R.styleable.twowayview_SpacingItemDecoration, defStyle, 0);
 
-        final int verticalSpacing =
-                Math.max(0, a.getDimension(R.styleable.twowayview_SpacingItemDecoration_android_verticalSpacing, 0));
-        final int horizontalSpacing =
-                Math.max(0, a.getDimension(R.styleable.twowayview_SpacingItemDecoration_android_horizontalSpacing, 0));
+        final float verticalSpacing = a.getDimension(R.styleable.twowayview_SpacingItemDecoration_android_verticalSpacing, 0);
+        final float horizontalSpacing = a.getDimension(R.styleable.twowayview_SpacingItemDecoration_android_horizontalSpacing, 0);
 
         a.recycle();
 
-        mItemSpacing = new ItemSpacingOffsets(verticalSpacing, horizontalSpacing);
+        mItemSpacing = new ItemSpacingOffsets((int)verticalSpacing, (int)horizontalSpacing);
     }
 
     public SpacingItemDecoration(int verticalSpacing, int horizontalSpacing) {
