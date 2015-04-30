@@ -24,6 +24,10 @@
     <declare-styleable name="twowayview_GridLayoutManager">
         <attr name="twowayview_numColumns" format="integer"/>
         <attr name="twowayview_numRows" format="integer"/>
+        <attr name="twowayview_flowDirection">
+            <enum name="left_to_right" value="0"/>
+            <enum name="top_to_bottom" value="1"/>
+        </attr>
     </declare-styleable>
 
     <declare-styleable name="twowayview_SpacingItemDecoration">

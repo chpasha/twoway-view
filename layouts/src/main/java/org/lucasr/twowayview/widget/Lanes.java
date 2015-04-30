@@ -262,21 +262,21 @@ class Lanes {
         outInfo.setUndefined();
 
         int targetEdge = (direction == Direction.END ? Integer.MAX_VALUE : Integer.MIN_VALUE);
-        for (int l = 0; l < mLanes.length; l++) {
+        for (int i = 0; i < mLanes.length; i++) {
             final int laneEdge;
             if (mIsVertical) {
-                laneEdge = (direction == Direction.END ? mLanes[l].bottom : mLanes[l].top);
+                laneEdge = (direction == Direction.END ? mLanes[i].bottom : mLanes[i].top);
             } else {
-                laneEdge = (direction == Direction.END ? mLanes[l].right : mLanes[l].left);
+                laneEdge = (direction == Direction.END ? mLanes[i].right : mLanes[i].left);
             }
 
             if ((direction == Direction.END && laneEdge < targetEdge) ||
                 (direction == Direction.START && laneEdge > targetEdge)) {
 
-                final int targetLane = findLaneThatFitsSpan(l, laneSpan, direction);
+                final int targetLane = findLaneThatFitsSpan(i, laneSpan, direction);
                 if (targetLane != NO_LANE) {
                     targetEdge = laneEdge;
-                    outInfo.set(targetLane, l);
+                    outInfo.set(targetLane, i);
                 }
             }
         }

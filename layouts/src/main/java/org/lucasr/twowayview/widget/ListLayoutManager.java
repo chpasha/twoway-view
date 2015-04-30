@@ -39,17 +39,17 @@ public class ListLayoutManager extends BaseLayoutManager {
     }
 
     @Override
-    int getLaneCount() {
+	protected int getLaneCount() {
         return 1;
     }
 
     @Override
-    void getLaneForPosition(LaneInfo outInfo, int position, Direction direction) {
+	protected void getLaneForPosition(LaneInfo outInfo, int position, Direction direction) {
         outInfo.set(0, 0);
     }
 
     @Override
-    void moveLayoutToPosition(int position, int offset, Recycler recycler, State state) {
+	protected void moveLayoutToPosition(int position, int offset, Recycler recycler, State state) {
         getLanes().reset(offset);
     }
 }

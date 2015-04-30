@@ -133,7 +133,7 @@ public class SpannableGridLayoutManager extends GridLayoutManager {
     }
 
     @Override
-    void getLaneForPosition(LaneInfo outInfo, int position, Direction direction) {
+	protected void getLaneForPosition(LaneInfo outInfo, int position, Direction direction) {
         final SpannableItemEntry entry = (SpannableItemEntry) getItemEntryForPosition(position);
         if (entry != null) {
             outInfo.set(entry.startLane, entry.anchorLane);

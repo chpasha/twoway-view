@@ -21,7 +21,6 @@ import android.graphics.Rect;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.LayoutParams;
 import android.support.v7.widget.RecyclerView.Recycler;
 import android.support.v7.widget.RecyclerView.State;
@@ -29,7 +28,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
-
 import org.lucasr.twowayview.TwoWayLayoutManager;
 import org.lucasr.twowayview.widget.Lanes.LaneInfo;
 
@@ -562,9 +560,11 @@ public abstract class BaseLayoutManager extends TwoWayLayoutManager {
         return new LayoutParams(c, attrs);
     }
 
-    abstract int getLaneCount();
-    abstract void getLaneForPosition(LaneInfo outInfo, int position, Direction direction);
-    abstract void moveLayoutToPosition(int position, int offset, Recycler recycler, State state);
+    protected abstract int getLaneCount();
+
+	protected abstract void getLaneForPosition(LaneInfo outInfo, int position, Direction direction);
+
+	protected abstract void moveLayoutToPosition(int position, int offset, Recycler recycler, State state);
 
     protected static class LanedSavedState extends SavedState {
         private Orientation orientation;

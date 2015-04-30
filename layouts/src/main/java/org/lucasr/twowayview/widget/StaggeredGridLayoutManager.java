@@ -108,7 +108,7 @@ public class StaggeredGridLayoutManager extends GridLayoutManager {
     }
 
     @Override
-    void getLaneForPosition(LaneInfo outInfo, int position, Direction direction) {
+	protected void getLaneForPosition(LaneInfo outInfo, int position, Direction direction) {
         final StaggeredItemEntry entry = (StaggeredItemEntry) getItemEntryForPosition(position);
         if (entry != null) {
             outInfo.set(entry.startLane, entry.anchorLane);
@@ -127,7 +127,7 @@ public class StaggeredGridLayoutManager extends GridLayoutManager {
     }
 
     @Override
-    void moveLayoutToPosition(int position, int offset, Recycler recycler, State state) {
+	protected void moveLayoutToPosition(int position, int offset, Recycler recycler, State state) {
         final boolean isVertical = isVertical();
         final Lanes lanes = getLanes();
 

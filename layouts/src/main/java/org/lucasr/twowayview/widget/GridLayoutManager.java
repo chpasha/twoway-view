@@ -31,8 +31,20 @@ public class GridLayoutManager extends BaseLayoutManager {
     private static final int DEFAULT_NUM_COLS = 2;
     private static final int DEFAULT_NUM_ROWS = 2;
 
+	/**
+	 * in which direction the items are laid out
+	 * <p><b>LEFT_TO_RIGHT</b> (Default behaviour) Z order - first item is placed in first column, second in second etc
+	 * <p><b>TOP_TO_BOTTOM</b> И order - first item is placed in first column of the first row, second in second row of the first column etc
+	 */
+	public enum FlowDirection
+	{
+		LEFT_TO_RIGHT,
+		TOP_TO_BOTTOM
+	}
+
     private int mNumColumns;
     private int mNumRows;
+	private FlowDirection mFlowDirection;
 
     public GridLayoutManager(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -54,6 +66,10 @@ public class GridLayoutManager extends BaseLayoutManager {
         mNumRows =
                 Math.max(1, a.getInt(R.styleable.twowayview_GridLayoutManager_twowayview_numRows, defaultNumRows));
 
+		mFlowDirection = FlowDirection.values()[
+			a.getInt(R.styleable.twowayview_GridLayoutManager_twowayview_flowDirection, FlowDirection.LEFT_TO_RIGHT.ordinal())
+		];
+
         a.recycle();
     }
 
@@ -72,18 +88,27 @@ public class GridLayoutManager extends BaseLayoutManager {
     }
 
     @Override
-    int getLaneCount() {
+    protected int getLaneCount() {
         return (isVertical() ? mNumColumns : mNumRows);
     }
 
     @Override
-    void getLaneForPosition(LaneInfo outInfo, int position, Direction direction) {
-        final int lane = (position % getLaneCount());
-        outInfo.set(lane, lane);
+	protected void getLaneForPosition(LaneInfo outInfo, int position, Direction direction) {
+		int lane = Lanes.NO_LANE;
+		switch (mFlowDirection) {
+			case LEFT_TO_RIGHT:
+				lane = (position % getLaneCount());
+				break;
+			case TOP_TO_BOTTOM:
+				int rowCount = (int) Math.ceil(1.0 * getAdapter().getItemCount() / getNumColumns());
+				lane = position / rowCount;
+				break;
+		}
+		outInfo.set(lane, lane);
     }
 
     @Override
-    void moveLayoutToPosition(int position, int offset, Recycler recycler, State state) {
+	protected void moveLayoutToPosition(int position, int offset, Recycler recycler, State state) {
         final Lanes lanes = getLanes();
         lanes.reset(offset);
 
@@ -135,4 +160,19 @@ public class GridLayoutManager extends BaseLayoutManager {
             requestLayout();
         }
     }
+
+	public FlowDirection getFlowDirection()
+	{
+		return mFlowDirection;
+	}
+
+	public void setFlowDirection(FlowDirection flowDirection)
+	{
+		if (this.mFlowDirection != flowDirection)
+		{
+			this.mFlowDirection = flowDirection;
+			resetLayoutEdges();
+			requestLayout();
+		}
+	}
 }
