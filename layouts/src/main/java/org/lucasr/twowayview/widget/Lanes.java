@@ -163,7 +163,8 @@ class Lanes {
     public int pushChildFrame(Rect outRect, int lane, int margin, Direction direction) {
         final int delta;
 
-        final Rect laneRect = mLanes[lane];
+        //Ein fließender Bug sorgt dafür, dass lane irgendwann > mLanes.length ist
+        final Rect laneRect = lane >= mLanes.length ? mLanes[mLanes.length-1] : mLanes[lane];
         if (mIsVertical) {
             if (direction == Direction.END) {
                 delta = outRect.top - laneRect.bottom;

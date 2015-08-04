@@ -21,7 +21,6 @@ import android.graphics.Rect;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.LayoutParams;
 import android.support.v7.widget.RecyclerView.Recycler;
 import android.support.v7.widget.RecyclerView.State;
@@ -29,7 +28,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
-
 import org.lucasr.twowayview.TwoWayLayoutManager;
 import org.lucasr.twowayview.widget.Lanes.LaneInfo;
 
@@ -157,7 +155,7 @@ public abstract class BaseLayoutManager extends TwoWayLayoutManager {
     protected void pushChildFrame(ItemEntry entry, Rect childFrame, int lane, int laneSpan,
                                   Direction direction) {
         final boolean shouldSetMargins = (direction == Direction.END &&
-                                          entry != null && !entry.hasSpanMargins());
+                entry != null && !entry.hasSpanMargins());
 
         for (int i = lane; i < lane + laneSpan; i++) {
             final int spanMargin;
@@ -258,8 +256,8 @@ public abstract class BaseLayoutManager extends TwoWayLayoutManager {
         final int laneSize = calculateLaneSize(this, laneCount);
 
         return (lanes.getOrientation() == getOrientation() &&
-                 lanes.getCount() == laneCount &&
-                 lanes.getLaneSize() == laneSize);
+                lanes.getCount() == laneCount &&
+                lanes.getLaneSize() == laneSize);
     }
 
     private boolean ensureLayoutState() {
@@ -406,10 +404,12 @@ public abstract class BaseLayoutManager extends TwoWayLayoutManager {
         super.onItemsChanged(recyclerView);
     }
 
-    @Override
+    /*@Override
     public Parcelable onSaveInstanceState() {
         final Parcelable superState = super.onSaveInstanceState();
-        final LanedSavedState state = new LanedSavedState(superState);
+        final LanedSavedState state;
+
+        state = new LanedSavedState(superState);
 
         final int laneCount = (mLanes != null ? mLanes.getCount() : 0);
         state.lanes = new Rect[laneCount];
@@ -422,11 +422,10 @@ public abstract class BaseLayoutManager extends TwoWayLayoutManager {
         state.orientation = getOrientation();
         state.laneSize = (mLanes != null ? mLanes.getLaneSize() : 0);
         state.itemEntries = mItemEntries;
-
         return state;
-    }
+    }*/
 
-    @Override
+    /*@Override
     public void onRestoreInstanceState(Parcelable state) {
         final LanedSavedState ss = (LanedSavedState) state;
 
@@ -436,7 +435,7 @@ public abstract class BaseLayoutManager extends TwoWayLayoutManager {
         }
 
         super.onRestoreInstanceState(ss.getSuperState());
-    }
+    }*/
 
     @Override
     protected boolean canAddMoreViews(Direction direction, int limit) {
@@ -563,7 +562,9 @@ public abstract class BaseLayoutManager extends TwoWayLayoutManager {
     }
 
     abstract int getLaneCount();
+
     abstract void getLaneForPosition(LaneInfo outInfo, int position, Direction direction);
+
     abstract void moveLayoutToPosition(int position, int offset, Recycler recycler, State state);
 
     protected static class LanedSavedState extends SavedState {

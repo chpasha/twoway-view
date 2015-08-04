@@ -15,6 +15,7 @@
  */
 
 apply plugin: 'maven'
+//apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
 def isReleaseBuild() {
@@ -39,8 +40,26 @@ def getRepositoryPassword() {
     return hasProperty('NEXUS_PASSWORD') ? NEXUS_PASSWORD : ""
 }
 
+def getMavenSettingsCredentials = {
+    String userHome = System.getProperty("user.home");
+    File mavenSettings = new File(userHome, ".m2/settings.xml")
+    def xmlSlurper = new XmlSlurper()
+    def output = xmlSlurper.parse(mavenSettings)
+    return output."servers"."server"
+}
+
+def getCredentials = {
+    def entries = getMavenSettingsCredentials()
+    for (entry in entries) {
+        if (entry."id".text() == "tomcom-snapshots") {
+            return [username: entry.username.text(), password: entry.password.text()]
+        }
+    }
+}
+
 afterEvaluate { project ->
     uploadArchives {
+        def creds = getCredentials()
         repositories {
             mavenDeployer {
                 beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
@@ -50,10 +69,10 @@ afterEvaluate { project ->
                 pom.version = VERSION_NAME
 
                 repository(url: getReleaseRepositoryUrl()) {
-                    authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
+                    authentication(userName: creds["username"], password: creds["password"])
                 }
                 snapshotRepository(url: getSnapshotRepositoryUrl()) {
-                    authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
+                    authentication(userName: creds["username"], password: creds["password"])
                 }
 
                 pom.project {
